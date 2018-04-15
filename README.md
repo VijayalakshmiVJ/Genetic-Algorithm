@@ -135,7 +135,7 @@ Selecting the best chromosome involves checking if we have arrived at solutions 
 
 
 
-                                 **Genetic Algorithm Flowchart**
+                                         Genetic Algorithm Flowchart
 
 **Few Limitations/Characteristics of our GA framework:**
 Owing to time constraints our GA framework is still in beta stage and will try to solve equality expressions with the following assumptions/characteristics only.
