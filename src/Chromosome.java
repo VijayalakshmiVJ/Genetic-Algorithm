@@ -9,20 +9,13 @@ public class Chromosome {
 	public Chromosome(int numgenes) {
 		setNumgenes(numgenes);
 		this.individual = new int[numgenes];
-	}
-	
-	public int[] getIndividual() {
-		return individual;
-	}
-	public void setIndividual(int[] individual) {
-		this.individual = individual;
+		setChromosomeLength(numgenes);
 	}
 	public int getNumgenes() {
 		return numgenes;
 	}
 	public void setNumgenes(int numgenes) {
 		this.numgenes = numgenes;
-		 
 	}
 	public int getChromosomeLength() {
 		return chromosomeLength;
