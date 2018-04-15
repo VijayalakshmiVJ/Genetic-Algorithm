@@ -1,6 +1,9 @@
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 public class EvaluatePolynomial {
 	
@@ -179,7 +182,7 @@ public class EvaluatePolynomial {
 		for(int i = 0; i < population.populationcount; i++) {
 			population.population[i].probabilty = fitnessProb[i]/cumulativeProbability;
 			population.population[i].probabilty = Double.parseDouble(df.format(population.population[i].probabilty));
-			System.out.println("probabilty = " + population.population[i].probabilty);
+			//System.out.println("probabilty = " + population.population[i].probabilty);
 			
 		}
 	}
@@ -190,9 +193,9 @@ public class EvaluatePolynomial {
 
 		for(int i = 0; i < population.populationcount; i++) {
 			if(prob == population.population[i].probabilty) {
-				System.out.println("prob matched for " + prob + " at i = " + i);
+				//System.out.println("prob matched for " + prob + " at i = " + i);
 				if(population.population[i].marked != true) {
-					System.out.println("Marked true for i " + i);
+					//System.out.println("Marked true for i " + i);
 					population.population[i].marked = true;
 					probIndividual =  population.population[i];
 					break;
@@ -206,7 +209,7 @@ public class EvaluatePolynomial {
 
 	}
 	
-	public void performSelection(Population population) {
+	public boolean performSelection(Population population) {
 		
 		fittestChromosomes = new Chromosome[population.survivorcount];
 		
@@ -224,7 +227,7 @@ public class EvaluatePolynomial {
 		// that have a higher probability to satisfy the equality equation
 		for(int i = 0; i < population.survivorcount; i++) {
 			fittest[i] = queue.delmax();
-			System.out.println("fittest probabilities are " + fittest[i]);
+			//System.out.println("fittest probabilities are " + fittest[i]);
 		}
 		for(int i = 0; i < population.survivorcount; i++) {
 			fittestChromosome =  matchProbIndividual(fittest[i], population);
@@ -246,6 +249,12 @@ public class EvaluatePolynomial {
 		for(int i = 0; i < population.survivorcount; i++) {
 			System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
 		}
+		
+		if(population.survivorcount == 2) {
+			return true;
+		}
+		
+		return false;
 
 	}
 	
@@ -315,96 +324,97 @@ public class EvaluatePolynomial {
 			chromosome.individual[randGene] = random.nextInt(range - 1) + 0;
 		}
 	}
+	
+	public boolean checkIfSolutionArrived(Population population, int range, int numgenes) {
+		int result = 0;
+		
+		System.out.println("Inside checkIfSolutionArrived ");
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for(int i = 0; i < population.survivorcount; i++) {
+			for(int j = 0; j < numgenes; j++) {
+				result += population.population[i].individual[j];
+				list.add(population.population[i].individual[j]);
+			}
+			if(result ==  range) {
+				System.out.println("Found the below best solution");
+				System.out.println(list);
+				return true;
+			}
+			list.clear();
+			result = 0;
+		}
+		return false;
+	}
 
 	public static void main(String[] args) {
 		// x + y = 10
-
-		int populationcount = 8;
+		int populationcount = 100;
 		int numgenes = 2;
 		int survivorcount = (int) (0.75 * populationcount);
-		String phenotype = "x + y - 10";
+		String phenotype = "x + y - 250";
 		Chromosome[] chromosomes = new Chromosome[populationcount];
 		Chromosome chromosome;
 		String[] str = phenotype.split(" ");
 		int range = Integer.parseInt(str[str.length - 1]);
 		Random random = new Random();
-		int count = 0;
+		int mutationCount = 0;
+		int count = 1;
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		int result = 0;
+		boolean bestSolutionFound = false;
+		int outercount = 0;
 
-		
-		System.out.println("range = " + range);
-		
-		// Map the phenotype x + y - 10 to genotype i.e.
-		// x and y will be a random integer generated between 0 - 9
-		//mappingPhenotypeGenotype(chromosomes, populationcount, range);
-		for(int i = 0; i < populationcount; i++) {
-			chromosomes[i] = new Chromosome(numgenes);
-			for(int j = 0; j < numgenes; j++) {
-				chromosomes[i].individual[j] = random.nextInt(range - 1) + 0;
-				//System.out.println("Individal " + i + " = " + chromosomes[i].individual[j]);
-				
+
+		while(bestSolutionFound == false && outercount < 10) {
+			// Map the phenotype x + y - 10 to genotype i.e.
+			// x and y will be a random integer generated between 0 - 9
+			//mappingPhenotypeGenotype(chromosomes, populationcount, range);
+			for(int i = 0; i < populationcount; i++) {
+				chromosomes[i] = new Chromosome(numgenes);
+				for(int j = 0; j < numgenes; j++) {
+					chromosomes[i].individual[j] = random.nextInt(range - 1) + 0;
+				}
 			}
-		}
 
-		System.out.println("Initial population");
-		for(int i = 0; i < populationcount; i++) {
-			System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
-		}
-	        
-		Population population = new Population(chromosomes, populationcount, survivorcount);
+			Population population = new Population(chromosomes, populationcount, survivorcount);
 
+			EvaluatePolynomial poly = new EvaluatePolynomial(populationcount, survivorcount);
 
-		EvaluatePolynomial poly = new EvaluatePolynomial(populationcount, survivorcount);
+			// Calculate fitness of each individual in the population
+			while(population.survivorcount >= 2) {
 
-		// Calculate fitness of each individual in the population
-		while(population.survivorcount >= 2) {
-			System.out.println("Entered while");
-			
-			poly.calcFitness(phenotype, population);
-			
-			poly.performSelection(population);
-			
-			poly.performCrossing(population);
-			
-			// Lets perform mutation on every second generation
-			// Here the idea is not to induce mutation in every generation but say in every second generation
-			// to increase diversity similar to nature.
-			if(count % 2 == 0) {
-				poly.performMutation(population, numgenes, range);
+				System.out.println("Entered while");
+				poly.calcFitness(phenotype, population);
+				poly.performSelection(population);
+				poly.performCrossing(population);
+
+				if(poly.checkIfSolutionArrived(population, range, numgenes)){
+					bestSolutionFound = true;
+					break;
+				}
+				// Lets perform mutation on every second generation
+				// Here the idea is not to induce mutation in every generation but say in every second generation
+				// to increase diversity similar to nature.
+				if(mutationCount % 4 == 0) {
+					poly.performMutation(population, numgenes, range);
+				}
+				if(poly.checkIfSolutionArrived(population, range, numgenes)){
+					bestSolutionFound = true;
+					break;
+				}
+				population.survivorcount = (int) ( 0.75 * population.survivorcount);
+				mutationCount++;
+				count++;
 			}
-			
-			//for(int i = 0; i < population.survivorcount; i++) {
-			//	chromosome = population.population[i];
-			//	for(int j = 0; j < numgenes; j++) {
-			//		System.out.println("After Individal " + i + " = " + chromosome.individual[j]);
-			//	}
-			//}
-			
-			System.out.println("While round");
-			for(int i = 0; i < population.survivorcount; i++) {
-				System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
+			outercount++;
+			if(bestSolutionFound == true) {
+				System.out.println("Num generations taken to arrive at the solution = " + count);
+				break;
 			}
-			
-			population.survivorcount = (int) ( 0.75 * population.survivorcount);
-			count++;
-		}
-		
-		System.out.println("After all rounds");
-		//for(int i = 0; i < population.survivorcount; i++) {
-		//	chromosome = population.population[i];
-		//	for(int j = 0; j < numgenes; j++) {
-		//		System.out.println("After everything Individal " + i + " = " + chromosome.individual[j]);
-		//	}
-		//}
-		
-		for(int i = 0; i < population.survivorcount; i++) {
-			System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
-		}
 
-		
-		
-
+		}
+		System.out.println("outercount = " + outercount);
 	}
 
-
-
 }
+
