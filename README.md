@@ -132,7 +132,7 @@ For example, say Chromosome 2 and Chromosome 5 were selected for mutation. Say g
 Selecting the best chromosome involves checking if we have arrived at solutions x and y that satisfy the phenotype i.e. the equality expression. If we have not arrived at the desired solution through the Steps 1 – 8, then as depicted in the flowchart, another round of population is taken and the entire GA process (Steps 1 - 8) is repeated.
 
 
-**Few Limitations of our GA framework:**<br />
+**Few Limitations/Characteristics of our GA framework:**
 Owing to time constraints our GA framework is still in beta stage and will try to solve equality expressions with the following assumptions/characteristics only.
 1. The equality expression will be linear only. Currently, our GA framework cannot solve quadratic or higher exponents based expressions.
 2. The equality expression will be fed in a certain format. Our GA framework relies on the format of the expression where in spaces must be provided after every variable and
@@ -142,7 +142,7 @@ operation. For eg:
 3. The equality expression will not have co-efficients greater than 4 digits. Anything higher will be truncated and only 4 digits will be considered as co-efficients. For eg:
     - 10x + 3y – 10 is a valid expression with right co- efficients.
     - 100000x + y – 10 is not a valid expression to solve for us. The GA will however still try to solve by truncating resulting in expression 1000x + y – 10.
-4. The GA framework will look to find positive solutions only to the equality expression.
+4. Our GA framework will look to find positive solutions only to the equality expression.
 5. While updating configuration file for population count, its important to update the same keeping in mind few characteristics of our GA framework. The population count should correspond to the solution we want to arrive at. 
 For eg: If the phenotype = x + y – 10 Then we are trying to find those combination of positive integers x and y that lead to a solution of 10. Now if we start off by a population of 1000, its highly likely that we will arrive at the solution in the first/second generation itself.
 
