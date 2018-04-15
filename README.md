@@ -133,6 +133,10 @@ Selecting the best chromosome involves checking if we have arrived at solutions 
 
 ![Alt text](./GA_Flowchart.png?raw=true "Genetic Algorithm Flowchart")
 
+
+
+                                 **Genetic Algorithm Flowchart**
+
 **Few Limitations/Characteristics of our GA framework:**
 Owing to time constraints our GA framework is still in beta stage and will try to solve equality expressions with the following assumptions/characteristics only.
 1. The equality expression will be linear only. Currently, our GA framework cannot solve quadratic or higher exponents based expressions.
