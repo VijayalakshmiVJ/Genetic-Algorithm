@@ -7,7 +7,7 @@ The genetic algorithm process involves the following steps to solve the equality
 
 **Step 1. PHENOTYPE** 
 Get the phenotype from user defined configuration file. Phenotype must be an equality expression of the following format 
-                                        ax + by – c
+                                        ''' ax + by – c '''
 where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation 
                                         ax + by – c = 0
 
