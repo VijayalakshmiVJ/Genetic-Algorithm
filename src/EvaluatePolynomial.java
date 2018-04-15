@@ -1,87 +1,47 @@
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 import java.util.Stack;
 public class EvaluatePolynomial {
 	
 	// Stack for numbers: 'values'
 	static Stack<Integer> values = new Stack<Integer>();
-	DecimalFormat df = new DecimalFormat("0.###");
-
 	// Stack for Operators: 'operation'
 	static Stack<Character> operation = new Stack<Character>();
+	
+	DecimalFormat df = new DecimalFormat("0.###");
+	Chromosome[] fittestChromosomes;
 	int[] evaluatedResult;
-	static int[] probOfChromosome;
 	static double[] fitnessProb;
 	static double[] fittest;
 
-	int[][] population;
-	static int survivorcount;
-	static int numgenes;
-	static int chromosomeLength;
-	Chromosome[] fittestChromosomes;
 	
 	public EvaluatePolynomial(int populationcount, int survivorcount) {
 		evaluatedResult = new int[populationcount];
 		fitnessProb = new double[populationcount];
 		fittest = new double[survivorcount];
-		
 	}
-	
-	public static int getChromosomeLength() {
-		return chromosomeLength;
-	}
-
-	public static void setChromosomeLength(int chromosomeLength) {
-		EvaluatePolynomial.chromosomeLength = chromosomeLength;
-	}
-
-	public static int getSurvivorcount() {
-		return survivorcount;
-	}
-
-	public static void setSurvivorcount(int survivorcount) {
-		EvaluatePolynomial.survivorcount = survivorcount;
-	}
-
-	public static int getNumgenes() {
-		return numgenes;
-	}
-
-	public static void setNumgenes(int numgenes) {
-		EvaluatePolynomial.numgenes = numgenes;
-	}
-
 	
 	public static String substitution (String expression, int[] individual, int numgenes) {
-		//System.out.println("Inside substitution");
-		
-		//System.out.println("received expression " + expression);
-		//for(int temp: individual) {
-		//	System.out.println("individual elements = " + temp);
-		//}
-		
 		int count = 0;
 		char[] array;
 		String newstring = expression;
 		char[] exp = expression.toCharArray();
-		
+
 		for(int i = 0; i < exp.length; i++) {
 			if(exp[i] == ' ') {
 				continue;
 			}
 			if((i + 1) < exp.length) {
 				if(Character.isDigit(exp[i]) && Character.isLetter(exp[i + 1])) {
-					newstring = newstring.substring(0, (i + 1)) + " * " + newstring.substring((i + 1), newstring.length());
+					newstring = newstring.substring(0, (i + 1)) + " * " + 
+				                newstring.substring((i + 1), newstring.length());
 					exp = newstring.toCharArray();
 				}
 			}
 		}
 		array = newstring.toCharArray();
-
 		for(int i = 0; i < newstring.toCharArray().length; i++) {
 			if(exp[i] == ' ') {
 				continue;
@@ -92,7 +52,6 @@ public class EvaluatePolynomial {
 			}
 		}
 		String string = new String(array);
-		//System.out.println("Final Expression  = " + string);
 		return string;
 	}
 
@@ -127,7 +86,6 @@ public class EvaluatePolynomial {
 
 		for(int i = 0; i < exp.length; i++) {
 			if(exp[i] == ' ') {
-
 				continue;
 			}
 			if (exp[i] >= '0' && exp[i] <= '9'){
@@ -158,7 +116,6 @@ public class EvaluatePolynomial {
 		Double.parseDouble(df.format(fitnessProb[ind]));
 		fitnessProb[ind] = (double)(1/(1 + (double) evaluatedResult[ind]));
 		fitnessProb[ind] = Double.parseDouble(df.format(fitnessProb[ind]));
-		//System.out.println("fitnessProb[ind] = " + fitnessProb[ind]);
 		return fitnessProb[ind];
 	}
 
@@ -172,7 +129,6 @@ public class EvaluatePolynomial {
 			chromosome = population.population[i];
 			str = substitution(phenotype, chromosome.individual, chromosome.numgenes);
 			evaluatedResult[i] = Math.abs(evaluate(str));
-			//System.out.println("evaluatedResult[i] = " + evaluatedResult[i]);
 			cumulativeProbability += calcFitnessProbability(i, population.populationcount);
 			
 		}
@@ -182,15 +138,11 @@ public class EvaluatePolynomial {
 		for(int i = 0; i < population.populationcount; i++) {
 			population.population[i].probabilty = fitnessProb[i]/cumulativeProbability;
 			population.population[i].probabilty = Double.parseDouble(df.format(population.population[i].probabilty));
-			//System.out.println("probabilty = " + population.population[i].probabilty);
-			
 		}
 	}
 
 	public Chromosome matchProbIndividual(double prob, Population population) {
-
 		Chromosome probIndividual = null;
-
 		for(int i = 0; i < population.populationcount; i++) {
 			if(prob == population.population[i].probabilty) {
 				//System.out.println("prob matched for " + prob + " at i = " + i);
@@ -206,20 +158,17 @@ public class EvaluatePolynomial {
 			}
 		}
 		return probIndividual;
-
 	}
 	
 	public boolean performSelection(Population population) {
-		
-		fittestChromosomes = new Chromosome[population.survivorcount];
-		
-		Chromosome[] chromosomes;
 		System.out.println("Entering performSelection ");
+		
+		Chromosome[] chromosomes = population.population;
+		fittestChromosomes = new Chromosome[population.survivorcount];
 		Chromosome fittestChromosome = null;
 		PriorityQueue queue = new PriorityQueue(population.populationcount);
-		// Use priority queue to store all individuals/chromosomes probability
 		
-		System.out.println("populationcount " + population.populationcount);
+		// Use priority queue to store all individuals/chromosomes probability
 		for(int i = 0; i < population.populationcount; i++) {
 			queue.insert(population.population[i].probabilty);
 		}
@@ -227,41 +176,27 @@ public class EvaluatePolynomial {
 		// that have a higher probability to satisfy the equality equation
 		for(int i = 0; i < population.survivorcount; i++) {
 			fittest[i] = queue.delmax();
-			//System.out.println("fittest probabilities are " + fittest[i]);
 		}
 		for(int i = 0; i < population.survivorcount; i++) {
 			fittestChromosome =  matchProbIndividual(fittest[i], population);
-			
 			if(fittestChromosome != null) {
 				population.population[i] = fittestChromosome;
 			}
 		}
-		
-		// copy them to population
-		//for(int i = 0; i < population.survivorcount; i++) {
-		//	population.population[i] = fittestChromosomes[i];
-		//}
-		
 		population.populationcount = population.survivorcount;
-		
-		chromosomes = population.population;
 		System.out.println("After selection fittest are");
 		for(int i = 0; i < population.survivorcount; i++) {
 			System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
 		}
-		
 		if(population.survivorcount == 2) {
 			return true;
 		}
-		
 		return false;
-
 	}
 	
 	
 	public void swap(Chromosome parent1, Chromosome parent2, int idx) {
 		int temp = 0;
-		
 		temp = parent1.individual[idx];
 		parent1.individual[idx] = parent2.individual[idx];
 		parent2.individual[idx] = temp;
@@ -278,11 +213,10 @@ public class EvaluatePolynomial {
 		int crossingPoint = 0;
 		Random random = new Random();
 		
-		for(int i = 0; i < survivorcount; i++) {
+		for(int i = 0; i < population.survivorcount; i++) {
 			// Cross first with last, second with second last and so on
 			// Randomly generate crossing point for each such crossing/mating
-			
-			crossingPoint = random.nextInt(chromosomeLength) + 1;
+			crossingPoint = random.nextInt(population.population[i].chromosomeLength) + 1;
 			
 			if (population.population[i].numgenes == 2) {
 				crossingPoint = 1;
@@ -291,33 +225,13 @@ public class EvaluatePolynomial {
 		}
 	}
 
-	public static void mappingPhenotypeGenotype(Chromosome[] chromosomes, int populationcount, int range) {
-		// Generate random num between 0 to 9
-		Random random = new Random();
-		
-		for(int i = 0; i < populationcount; i++) {
-			chromosomes[i] = new Chromosome(numgenes);
-			for(int j = 0; j < numgenes; j++) {
-				chromosomes[i].individual[j] = random.nextInt(range - 1) + 0;
-				//System.out.println("Individal " + i + " = " + chromosomes[i].individual[j]);
-			}
-		}
-	}
-	
 	public void performMutation(Population population, int numgenes, int range) {
-		
 		System.out.println("Entered performMutation");
 		Chromosome chromosome;
 		Random random = new Random();
-		
 		int numChromosomesToMutate = population.populationcount/3;
-		//System.out.println("numChromosomesToMutate = " + numChromosomesToMutate);
-		
 		int randChromosome = random.nextInt(population.populationcount) + 0;
-		//System.out.println("randChromosome chosen = " + randChromosome);
-		
 		int randGene = random.nextInt(numgenes) + 0;
-		//System.out.println("randGene chosen = " + randGene);
 		
 		for(int i = 0; i < numChromosomesToMutate; i++) {
 			chromosome = population.population[randChromosome];
@@ -327,8 +241,7 @@ public class EvaluatePolynomial {
 	
 	public boolean checkIfSolutionArrived(Population population, int range, int numgenes) {
 		int result = 0;
-		
-		System.out.println("Inside checkIfSolutionArrived ");
+
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int i = 0; i < population.survivorcount; i++) {
 			for(int j = 0; j < numgenes; j++) {
@@ -347,28 +260,27 @@ public class EvaluatePolynomial {
 	}
 
 	public static void main(String[] args) {
-		// x + y = 10
-		int populationcount = 100;
+		// Generate solutions to satisfy a given linear equality equation
+		//TODO: configuration file for these params
+		int populationcount = 20;
 		int numgenes = 2;
 		int survivorcount = (int) (0.75 * populationcount);
-		String phenotype = "x + y - 250";
+		
+		String phenotype = "x + y - 48";
 		Chromosome[] chromosomes = new Chromosome[populationcount];
-		Chromosome chromosome;
 		String[] str = phenotype.split(" ");
 		int range = Integer.parseInt(str[str.length - 1]);
 		Random random = new Random();
 		int mutationCount = 0;
-		int count = 1;
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		int result = 0;
 		boolean bestSolutionFound = false;
-		int outercount = 0;
+		int countNumGeneration = 1;
+		int countPopulationGeneration = 0;
+		int numPopulationGenerations = 10;
 
-
-		while(bestSolutionFound == false && outercount < 10) {
-			// Map the phenotype x + y - 10 to genotype i.e.
-			// x and y will be a random integer generated between 0 - 9
-			//mappingPhenotypeGenotype(chromosomes, populationcount, range);
+		while(bestSolutionFound == false && countPopulationGeneration < numPopulationGenerations) {
+			// MAPPING PHENOTYPE --> GENOTYPE
+			// For EG : To map the phenotype x + y - 10 to genotype i.e. x and y 
+			// will be a random integer generated between 0 - 9
 			for(int i = 0; i < populationcount; i++) {
 				chromosomes[i] = new Chromosome(numgenes);
 				for(int j = 0; j < numgenes; j++) {
@@ -377,23 +289,23 @@ public class EvaluatePolynomial {
 			}
 
 			Population population = new Population(chromosomes, populationcount, survivorcount);
-
 			EvaluatePolynomial poly = new EvaluatePolynomial(populationcount, survivorcount);
 
-			// Calculate fitness of each individual in the population
+			// Continue to perform fitness calculation, crossing and mutation until there are only 2 children left. If no
+			// solution is found at this point, let's regenerate the population again and repeat the below functions.
 			while(population.survivorcount >= 2) {
-
-				System.out.println("Entered while");
 				poly.calcFitness(phenotype, population);
 				poly.performSelection(population);
 				poly.performCrossing(population);
 
+				// At this point check if we have already arrived at the solution that 
+				// satisfies the equality expression.
 				if(poly.checkIfSolutionArrived(population, range, numgenes)){
 					bestSolutionFound = true;
 					break;
 				}
-				// Lets perform mutation on every second generation
-				// Here the idea is not to induce mutation in every generation but say in every second generation
+				// Lets perform mutation on every 4th generation. Here the idea is not to
+				// induce mutation in every generation but after every couple of generations
 				// to increase diversity similar to nature.
 				if(mutationCount % 4 == 0) {
 					poly.performMutation(population, numgenes, range);
@@ -404,17 +316,15 @@ public class EvaluatePolynomial {
 				}
 				population.survivorcount = (int) ( 0.75 * population.survivorcount);
 				mutationCount++;
-				count++;
+				countNumGeneration++;
 			}
-			outercount++;
+			countPopulationGeneration++;
 			if(bestSolutionFound == true) {
-				System.out.println("Num generations taken to arrive at the solution = " + count);
+				System.out.println("Num generations within a population to arrive to solution = " + countNumGeneration);
 				break;
 			}
-
 		}
-		System.out.println("outercount = " + outercount);
+		System.out.println("Populations generated to arrive to solution = " + countPopulationGeneration);
 	}
-
 }
 
