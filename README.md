@@ -6,8 +6,8 @@ A real-world problem that we have selected to solve through Genetic Algorithm fr
 The genetic algorithm process involves the following steps to solve the equality expression
 
 **Step 1. PHENOTYPE** 
-Get the phenotype from user defined configuration file. Phenotype must be an equality expression of the following format 
-                                        ''' ax + by – c '''
+Get the phenotype from user defined configuration file. Phenotype must be an equality expression of the following format <br /> 
+                                         ax + by – c <br />
 where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation 
                                         ax + by – c = 0
 
