@@ -10,13 +10,13 @@ Get the phenotype from user defined configuration file. Phenotype must be an equ
 ```
                                          ax + by – c 
 ```
-where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation <br />
+where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation or phenotype <br />
 ```
                                         ax + by – c = 0 
 ```
 
 **Step 2. EXPRESSION MAPPING (MAP TO GENOTYPE)** <br />
-Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – (c/coefficient of gene - 1). For example, say the number of chromosomes/individuals in population are 6. <br />
+Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – [(c/coefficient of gene) - 1)]. For example, say the number of chromosomes/individuals in population are 6. <br />
 -	For a phenotype of x + y – 10, we generate random values for genes x and y between 0 – (10 - 1) i.e. 0 – 9 for all 6 chromosomes/individuals as shown below <br />
 
 ```
