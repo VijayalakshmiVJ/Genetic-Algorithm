@@ -5,46 +5,46 @@ A real-world problem that we have selected to solve through Genetic Algorithm fr
 
 The genetic algorithm process involves the following steps to solve the equality expression
 
-**Step 1. PHENOTYPE** 
+**Step 1. PHENOTYPE** <br />
 Get the phenotype from user defined configuration file. Phenotype must be an equality expression of the following format <br /> 
                                          ax + by – c <br />
-where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation 
-                                        ax + by – c = 0
+where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation <br />
+                                        ax + by – c = 0 <br />
 
-**Step 2. EXPRESSION MAPPING (MAP TO GENOTYPE)** 
-Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – (c/coefficient of gene - 1).
+**Step 2. EXPRESSION MAPPING (MAP TO GENOTYPE)** <br />
+Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – (c/coefficient of gene - 1). <br />
 
-For example, say the number of chromosomes/individuals in population are 6.
--	For a phenotype of x + y – 10, we generate random values for genes x and y between 0 – (10 - 1) i.e. 0 – 9 for all 6 chromosomes/individuals as shown below
-Chromosome[1]   =  [x;y]  =  [01;05] 
-Chromosome[2]   =  [x;y]  =  [02;09] 
-Chromosome[3]   =  [x;y]  =  [01;04] 
-Chromosome[4]   =  [x;y]  =  [03;07] 
-Chromosome[5]   =  [x;y]  =  [01;04] 
-Chromosome[6]   =  [x;y]  =  [08;05]
+For example, say the number of chromosomes/individuals in population are 6.<br />
+-	For a phenotype of x + y – 10, we generate random values for genes x and y between 0 – (10 - 1) i.e. 0 – 9 for all 6 chromosomes/individuals as shown below <br />
+Chromosome[1]   =  [x;y]  =  [01;05] <br />
+Chromosome[2]   =  [x;y]  =  [02;09] <br />
+Chromosome[3]   =  [x;y]  =  [01;04] <br />
+Chromosome[4]   =  [x;y]  =  [03;07] <br />
+Chromosome[5]   =  [x;y]  =  [01;04] <br />
+Chromosome[6]   =  [x;y]  =  [08;05]<br />
 
--	For phenotype of 2x + y – 22, we generate random values for gene x such that the range is between 0 – (c/co-efficient of x -1) =>  0 – (22/2 - 1)  => 0 – 11. For y however, random values are generated between range 0 – (c - 1) => 0 – 21 since the coefficient of y is 1.
+-	For phenotype of 2x + y – 22, we generate random values for gene x such that the range is between 0 – (c/co-efficient of x -1) =>  0 – (22/2 - 1)  => 0 – 11. For y however, random values are generated between range 0 – (c - 1) => 0 – 21 since the coefficient of y is 1. <br />
 
-Chromosome[1]   =  [x;y]  =  [12;05] 
-Chromosome[2]   =  [x;y]  =  [02;21] 
-Chromosome[3]   =  [x;y]  =  [10;04] 
-Chromosome[4]   =  [x;y]  =  [20;01] 
-Chromosome[5]   =  [x;y]  =  [01;04] 
-Chromosome[6]   =  [x;y]  =  [18;05]
+Chromosome[1]   =  [x;y]  =  [12;05] <br />
+Chromosome[2]   =  [x;y]  =  [02;21] <br />
+Chromosome[3]   =  [x;y]  =  [10;04] <br />
+Chromosome[4]   =  [x;y]  =  [20;01] <br />
+Chromosome[5]   =  [x;y]  =  [01;04] <br />
+Chromosome[6]   =  [x;y]  =  [18;05] <br />
 
 
-**Step 3. FITNESS EVALUATION** 
-Evaluate fitness for each chromosome/individual in the population. Fitness calculation involves finding the probability of each chromosome to satisfy the given equation. It involves the following steps.
-1.	Evaluate the expression for each chromosome using the random numbers generated in genotype. For example consider expression x + y – 10, we know from above that the genotype of the population for this phenotype was
+**Step 3. FITNESS EVALUATION** <br />
+Evaluate fitness for each chromosome/individual in the population. Fitness calculation involves finding the probability of each chromosome to satisfy the given equation. It involves the following steps. <br />
+1.	Evaluate the expression for each chromosome using the random numbers generated in genotype. For example consider expression x + y – 10, we know from above that the genotype of the population for this phenotype was <br />
 
-Chromosome[1]   =  [x;y]  =  [01;05] 
-Chromosome[2]   =  [x;y]  =  [02;09] 
-Chromosome[3]   =  [x;y]  =  [01;04] 
-Chromosome[4]   =  [x;y]  =  [03;07] 
-Chromosome[5]   =  [x;y]  =  [01;04] 
-Chromosome[6]   =  [x;y]  =  [08;05]
+Chromosome[1]   =  [x;y]  =  [01;05] <br />
+Chromosome[2]   =  [x;y]  =  [02;09] <br />
+Chromosome[3]   =  [x;y]  =  [01;04] <br />
+Chromosome[4]   =  [x;y]  =  [03;07] <br />
+Chromosome[5]   =  [x;y]  =  [01;04] <br />
+Chromosome[6]   =  [x;y]  =  [08;05] <br />
 
-Thus evaluations for these chromosome will be as follows:
+Thus evaluations for these chromosome will be as follows: <br />
 
       EvaluatedResult[1] = abs( 1 + 5 - 10)  = 4
       EvaluatedResult[2] = abs( 2 + 9 - 10)  = 1
@@ -54,8 +54,8 @@ Thus evaluations for these chromosome will be as follows:
 
 2.	Calculate probability for each of these chromosomes as follows
 
-      Probability[1] = 1 / (1  + EvaluatedResult[1]) = 1/ (1 + 4) = 1/5 = 0.250
-      Probability[2] = 1 / (1  + EvaluatedResult[2]) = 1/ (1 + 1) = 1/2 = 0.500
+      Probability[1] = 1 / (1  + EvaluatedResult[1]) = 1/ (1 + 4) = 1/5 = 0.250 <br />
+      Probability[2] = 1 / (1  + EvaluatedResult[2]) = 1/ (1 + 1) = 1/2 = 0.500 
       Probability[3] = 1 / (1  + EvaluatedResult[3]) = 1/ (1 + 6) = 1/2 = 0.142
       Probability[4] = 1 / (1  + EvaluatedResult[4]) = 1/ (1 + 0) =  1    = 1  and so on..
 
