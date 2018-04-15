@@ -17,7 +17,7 @@ where a, b and c are constants and x and y represent the variables to which solu
 
 **Step 2. EXPRESSION MAPPING (MAP TO GENOTYPE)** <br />
 Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – [(c/coefficient of gene) - 1)]. For example, say the number of chromosomes/individuals in population are 6. <br />
--	For a phenotype of x + y – 10, we generate random values for genes x and y between 0 – (10 - 1) i.e. 0 – 9 for all 6 chromosomes/individuals as shown below <br />
+-	For a phenotype of x + y – 10, we generate random values for genes x and y between 0 – [(c/coefficient of gene) - 1)] i.e 0 – [(10/1) - 1] i.e. 0 – 9 for all 6 chromosomes/individuals as shown below <br />
 
 ```
 	Chromosome[1]   =  [x;y]  =  [01;05] 
@@ -27,7 +27,7 @@ Map this phenotype to a genotype such that each gene represents one variable sta
 	Chromosome[5]   =  [x;y]  =  [01;04] 
 	Chromosome[6]   =  [x;y]  =  [08;05]
 ```
--	For phenotype of 2x + y – 22, we generate random values for gene x such that the range is between 0 – (c/co-efficient of x -1) =>  0 – (22/2 - 1)  => 0 – 11. For y however, random values are generated between range 0 – (c - 1) => 0 – 21 since the coefficient of y is 1. <br />
+-	For phenotype of 2x + y – 22, we generate random values for gene x such that the range is between 0 – [(c/co-efficient of x - 1)] =>  0 – [(22/2) - 1]  => 0 – 11. For y however, random values are generated between range 0 – (c/1 - 1) => 0 – 21 since the coefficient of y is 1. <br />
 
 ```
 	Chromosome[1]   =  [x;y]  =  [12;05] 
