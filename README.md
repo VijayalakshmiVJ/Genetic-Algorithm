@@ -61,7 +61,7 @@ Thus evaluations for these chromosome will be as follows: <br />
 
 2.	Calculate probability for each of these chromosomes as follows
 ```
-      	Probability[1] = 1 / (1  + EvaluatedResult[1]) = 1/ (1 + 4) = 1/5 = 0.250 <br />
+      	Probability[1] = 1 / (1  + EvaluatedResult[1]) = 1/ (1 + 4) = 1/5 = 0.250 
       	Probability[2] = 1 / (1  + EvaluatedResult[2]) = 1/ (1 + 1) = 1/2 = 0.500 
       	Probability[3] = 1 / (1  + EvaluatedResult[3]) = 1/ (1 + 6) = 1/2 = 0.142
       	Probability[4] = 1 / (1  + EvaluatedResult[4]) = 1/ (1 + 0) =  1    = 1  and so on..
@@ -82,7 +82,7 @@ We can see that Chromosome 4 has the highest probability and will one of the chr
 The selection process involves selecting those chromosomes that have the highest probability.
 A priority queue is implemented to return the highest probability. Also the number of such chromosomes to be selected is governed by the percentage of members to be retained or eliminated given from configuration file.
 
-If the population to retain is 75% and elimination 25%, which is generally what this GA framework suggests. Thus if population is 6 as above, 4 fittest chromosomes will be selected and 2 eliminated.
+If the population to retain is 75% and elimination 25%, which is generally what this GA framework suggests, then for a population of 6 as above, 4 fittest chromosomes will be selected and 2 eliminated.
 
 
 **Step 5. CROSSOVER** <br />
