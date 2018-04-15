@@ -7,42 +7,49 @@ The genetic algorithm process involves the following steps to solve the equality
 
 **Step 1. PHENOTYPE** <br />
 Get the phenotype from user defined configuration file. Phenotype must be an equality expression of the following format <br /> 
+```
                                          ax + by – c <br />
+```
 where a, b and c are constants and x and y represent the variables to which solutions are to be found such that they satisfy the equation <br />
+```
                                         ax + by – c = 0 <br />
+```
 
 **Step 2. EXPRESSION MAPPING (MAP TO GENOTYPE)** <br />
-Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – (c/coefficient of gene - 1). <br />
-
-For example, say the number of chromosomes/individuals in population are 6.<br />
+Map this phenotype to a genotype such that each gene represents one variable starting from the left-hand side of the equality expression. This gene is encoded with a random variable between range 0 – (c/coefficient of gene - 1). For example, say the number of chromosomes/individuals in population are 6. <br />
 -	For a phenotype of x + y – 10, we generate random values for genes x and y between 0 – (10 - 1) i.e. 0 – 9 for all 6 chromosomes/individuals as shown below <br />
+
+```
 Chromosome[1]   =  [x;y]  =  [01;05] <br />
 Chromosome[2]   =  [x;y]  =  [02;09] <br />
 Chromosome[3]   =  [x;y]  =  [01;04] <br />
 Chromosome[4]   =  [x;y]  =  [03;07] <br />
 Chromosome[5]   =  [x;y]  =  [01;04] <br />
 Chromosome[6]   =  [x;y]  =  [08;05]<br />
-
+```
 -	For phenotype of 2x + y – 22, we generate random values for gene x such that the range is between 0 – (c/co-efficient of x -1) =>  0 – (22/2 - 1)  => 0 – 11. For y however, random values are generated between range 0 – (c - 1) => 0 – 21 since the coefficient of y is 1. <br />
 
+```
 Chromosome[1]   =  [x;y]  =  [12;05] <br />
 Chromosome[2]   =  [x;y]  =  [02;21] <br />
 Chromosome[3]   =  [x;y]  =  [10;04] <br />
 Chromosome[4]   =  [x;y]  =  [20;01] <br />
 Chromosome[5]   =  [x;y]  =  [01;04] <br />
 Chromosome[6]   =  [x;y]  =  [18;05] <br />
-
+```
 
 **Step 3. FITNESS EVALUATION** <br />
 Evaluate fitness for each chromosome/individual in the population. Fitness calculation involves finding the probability of each chromosome to satisfy the given equation. It involves the following steps. <br />
 1.	Evaluate the expression for each chromosome using the random numbers generated in genotype. For example consider expression x + y – 10, we know from above that the genotype of the population for this phenotype was <br />
 
+```
 Chromosome[1]   =  [x;y]  =  [01;05] <br />
 Chromosome[2]   =  [x;y]  =  [02;09] <br />
 Chromosome[3]   =  [x;y]  =  [01;04] <br />
 Chromosome[4]   =  [x;y]  =  [03;07] <br />
 Chromosome[5]   =  [x;y]  =  [01;04] <br />
 Chromosome[6]   =  [x;y]  =  [08;05] <br />
+```
 
 Thus evaluations for these chromosome will be as follows: <br />
 
@@ -53,7 +60,7 @@ Thus evaluations for these chromosome will be as follows: <br />
 
 
 2.	Calculate probability for each of these chromosomes as follows
-
+```
       Probability[1] = 1 / (1  + EvaluatedResult[1]) = 1/ (1 + 4) = 1/5 = 0.250 <br />
       Probability[2] = 1 / (1  + EvaluatedResult[2]) = 1/ (1 + 1) = 1/2 = 0.500 
       Probability[3] = 1 / (1  + EvaluatedResult[3]) = 1/ (1 + 6) = 1/2 = 0.142
@@ -61,14 +68,14 @@ Thus evaluations for these chromosome will be as follows: <br />
 
       Total Probability   =  Probability[1] + Probability[2] + Probability[3] + …..
                     	    =  0.250 + 0.500 + 0.142 + 1 + ..
-
+```
 3.	Thus fitness /probability of each chromosome will be calculated as follows
-
+```
       Fitness[1] =  Probability[1]/ Total Probability = 0.250/1.892 = 0.132
       Fitness[2] =  Probability[2]/ Total Probability = 0.500/1.892 = 0.264
       Fitness[3] =  Probability[3]/ Total Probability = 0.142/1.892 = 0.075
       Fitness[4] =  Probability[4]/ Total Probability = 0.250/1.892 = 0.530 and so on…
-
+```
 We can see that Chromosome 4 has the highest probability and will one of the chromosomes to be selected by the selection function in the next steps.
 
 **Step 4. SELECTION**
@@ -82,37 +89,43 @@ If the population to retain is 75% and elimination 25%, which is generally what 
 For crossover, we randomly select the crossing points based on the number of the genes. For example if the number of genes are 2 such as above examples, then we choose the middle, i.e 1 as crossing point. If the number of genes are 3 or more, we randomly generate the crossing point to range between 0 - (chromosomeLength – 1). The crossover will thus happen between 0 till crossing point (but not including it).
 For example, here since number of genes is 2, crossing point = 1. So interchange all genes starting from 0 till 1 (not including 1)
 
+```
 Chromosome[1]   =  [x;y]  =  [01;05] 
 				                      ||  exchange genes at index 0 only
 				                      ||
 Chromosome[2]   =  [x;y]  =  [02;09] 
+```
 
 Thus, offsprings are 
-
+```
 Chromosome[7]   =  [x;y]  =  [02;05] 
 Chromosome[7]   =  [x;y]  =  [01;09] 
+```
 
 If the number of genes are higher say for example 4, randomly select crossing point between 0 - (chromosomeLength – 1) i.e. 0 - 3. Say 2 was generated as crossing point. Then cross all genes till index 1.
 
+```
 Chromosome[1]   =  [x;y]  =  [01;05;02;09]
                               || ||
                               || || exchange genes starting at index 0 till index 1
 Chromosome[2]   =  [x;y]  =  [08;01;02;09]
+```
 
 Thus, offsprings are 
-
+```
 Chromosome[1]   =  [x;y]  =  [08;01;02;09]
 Chromosome[2]   =  [x;y]  =  [01;05;02;09]
-
+```
 
 **Step 7. MUTATION** 
 In our GA framework, we try to model mutation somewhat similar to nature. So, we have induced mutation in every 4 th generation as follows. 1/3 rd of the population is considered for mutation and a random gene is selected to mutate. The random number at that gene index is then replaced by another random number generated by considering coefficients of that gene. 
 
 For example, say Chromosome 2 and Chromosome 5 were selected for mutation. Say gene at index 1 was selected for chromosome 2 and gene at index 0 was selected for Chromosome 5 to mutate. Thus, we may get the following
 
+```
 Chromosome[2]   =  [x;y]  =  [02;**09**]   ---say mutated to --- > [02;**04**]   
 Chromosome[5]   =  [x;y]  =  [**01**;04]   ---say mutated to --- > [**05**;04]  
-
+```
 
 **Step 8. SOLUTION (BEST CHROMOSOMES)** 
 
