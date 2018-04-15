@@ -305,6 +305,8 @@ public class EvaluateEquality {
 		int survivorcount = (int) (0.75 * populationcount);
 		String phenotype = "2x + 10y - 140";
 		
+		//final String INFILE =  "configuration.txt";
+		
 		Chromosome[] chromosomes = new Chromosome[populationcount];
 		String[] str = phenotype.split(" ");
 		int range = Integer.parseInt(str[str.length - 1]);
