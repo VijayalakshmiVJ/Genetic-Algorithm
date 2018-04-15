@@ -131,7 +131,7 @@ For example, say Chromosome 2 and Chromosome 5 were selected for mutation. Say g
 
 Selecting the best chromosome involves checking if we have arrived at solutions x and y that satisfy the phenotype i.e. the equality expression. If we have not arrived at the desired solution through the Steps 1 – 8, then as depicted in the flowchart, another round of population is taken and the entire GA process (Steps 1 - 8) is repeated.
 
-![Alt text](./GA_Flowchart.jpg?raw=true "Genetic Algorithm Flowchart")
+![Alt text](https://github.com/VijayalakshmiVJ/Genetic-Algorithm/edit/master/GA_Flowchart.png "Genetic Algorithm Flowchart")
 
 **Few Limitations/Characteristics of our GA framework:**
 Owing to time constraints our GA framework is still in beta stage and will try to solve equality expressions with the following assumptions/characteristics only.
