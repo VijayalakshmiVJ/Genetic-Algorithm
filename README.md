@@ -86,7 +86,7 @@ If the population to retain is 75% and elimination 25%, which is generally what 
 
 
 **Step 5. CROSSOVER** <br />
-For crossover, we randomly select the crossing points based on the number of the genes. For example if the number of genes are 2 such as above examples, then we choose the middle, i.e 1 as crossing point. If the number of genes are 3 or more, we randomly generate the crossing point to range between 0 - (chromosomeLength – 1). The crossover will thus happen between 0 till crossing point (but not including it).
+The fittest chromosomes from the above step are now to be crossed. For crossover we randomly select the crossing points based on the number of the genes. For example if the number of genes are 2 in each chromosome as depicted in above examples, then we choose the middle, i.e 1 as crossing point. If the number of genes are 3 or more, we randomly generate the crossing point to range between 0 - (chromosomeLength or numOfGenes – 1). The crossover will thus happen starting at 0 0 till crossing point (but not including it).
 For example, here since number of genes is 2, crossing point = 1. So interchange all genes starting from 0 till 1 (not including 1)
 
 ```
@@ -102,7 +102,7 @@ Thus, offsprings are
 		Chromosome[7]   =  [x;y]  =  [01;09] 
 ```
 
-If the number of genes are higher say for example 4, randomly select crossing point between 0 - (chromosomeLength – 1) i.e. 0 - 3. Say 2 was generated as crossing point. Then cross all genes till index 1.
+If the number of genes are higher say for example 4, randomly select crossing point between 0 - (chromosomeLength – 1) i.e. 0 - 3. Say 2 was randomly generated as crossing point. Then cross all genes starting at 0 till index 1 (not including 2).
 
 ```
 		Chromosome[1]   =  [x;y]  =  [01;05;02;09]
