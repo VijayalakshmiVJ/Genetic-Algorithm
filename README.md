@@ -148,6 +148,7 @@ operation. For eg:
     - 10x + 3y – 10 is a valid expression with right co- efficients.
     - 100000x + y – 10 is not a valid expression to solve for us. The GA will however still try to solve by truncating resulting in expression 1000x + y – 10.
 4. Our GA framework will look to find positive solutions only to the equality expression.
-5. While updating configuration file for population count, its important to update the same keeping in mind few characteristics of our GA framework. The population count should correspond to the solution we want to arrive at. 
-For eg: If the phenotype = x + y – 10 Then we are trying to find those combination of positive integers x and y that lead to a solution of 10. Now if we start off by a population of 1000, its highly likely that we will arrive at the solution in the first/second generation itself.
+5. While updating configuration file for population count, its important to update the same keeping in mind few characteristics of our GA framework. The population count should correlate to the solution we want to arrive at. For eg: 
+- If the phenotype = x + y – 10, then we are trying to find those combination of positive integers x and y that lead to a solution of 10. Now if we start off by an initial population of 1000, its highly likely that we will arrive at the solution in the first/second generation itself which is not really a problem, but we miss the genetic algorithm process work through its glory, through numerous generations and mutations. 
+- Similarly for a phenotype = 7x + 49y - 3108, an initial population of 10 or 100, will probably not help. In this case, its good to have a large initial population to start off with say 1000.
 
