@@ -18,7 +18,7 @@ public class EvaluateEquality {
 	
 	DecimalFormat df = new DecimalFormat("0.###");
 	Chromosome[] fittestChromosomes;
-	int[] evaluatedResult;
+	static int[] evaluatedResult;
 	static double[] fitnessProb;
 	static double[] fittest;
 	static int survivorcount;
@@ -27,8 +27,13 @@ public class EvaluateEquality {
 		evaluatedResult = new int[populationcount];
 		fitnessProb = new double[populationcount];
 		fittest = new double[survivorcount];
+		EvaluateEquality.survivorcount = survivorcount;
 	}
 	
+	// Substitutes the random numbers/genes for the variables within the equality expression 
+	// and returns the substituted string
+	// EG : If expression = x + y - 10, and Chromosome = [1, 5]
+	// then return string = 1 + 5 - 10
 	public static String substitution (String expression, int[] individual, int numgenes) {
 		int count = 0;
 		char[] array;
@@ -87,6 +92,8 @@ public class EvaluateEquality {
 		return 0;
 	}
 
+	// Evaluates the expression from the substitution method using stack operation 
+	// and returns the resultant value
 	public static int evaluate(String expression){
 		char[] exp = expression.toCharArray();
 
@@ -125,8 +132,8 @@ public class EvaluateEquality {
 		return fitnessProb[ind];
 	}
 
+	// Calculate probability of each chromosome to satisfy the given equality equation
 	public void calcFitness(String phenotype, Population population) {
-		System.out.println("Entering calcFitness ");
 		Chromosome chromosome;
 		String str;
 		double cumulativeProbability = 0;
@@ -139,7 +146,6 @@ public class EvaluateEquality {
 			
 		}
 		cumulativeProbability = Double.parseDouble(df.format(cumulativeProbability));
-		System.out.println("cumulativeProbability " + cumulativeProbability);
 		
 		for(int i = 0; i < population.populationcount; i++) {
 			if(cumulativeProbability != 0) {
@@ -156,9 +162,7 @@ public class EvaluateEquality {
 		Chromosome probIndividual = null;
 		for(int i = 0; i < population.populationcount; i++) {
 			if(prob == population.population[i].probabilty) {
-				//System.out.println("prob matched for " + prob + " at i = " + i);
 				if(population.population[i].marked != true) {
-					//System.out.println("Marked true for i " + i);
 					population.population[i].marked = true;
 					probIndividual =  population.population[i];
 					break;
@@ -171,9 +175,7 @@ public class EvaluateEquality {
 		return probIndividual;
 	}
 	
-	public boolean performSelection(Population population) {
-		System.out.println("Entering performSelection ");
-		
+	public boolean performSelection(Population population) {		
 		Chromosome[] chromosomes = population.population;
 		fittestChromosomes = new Chromosome[population.survivorcount];
 		Chromosome fittestChromosome = null;
@@ -188,6 +190,7 @@ public class EvaluateEquality {
 		for(int i = 0; i < population.survivorcount; i++) {
 			fittest[i] = queue.delmax();
 		}
+
 		for(int i = 0; i < population.survivorcount; i++) {
 			fittestChromosome =  matchProbIndividual(fittest[i], population);
 			if(fittestChromosome != null) {
@@ -195,10 +198,6 @@ public class EvaluateEquality {
 			}
 		}
 		population.populationcount = population.survivorcount;
-		System.out.println("After selection fittest are");
-		for(int i = 0; i < population.survivorcount; i++) {
-			System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
-		}
 		if(population.survivorcount == 2) {
 			survivorcount = population.survivorcount;
 			return true;
@@ -207,7 +206,7 @@ public class EvaluateEquality {
 	}
 	
 	
-	public void swap(Chromosome parent1, Chromosome parent2, int idx) {
+	public void swapGenes(Chromosome parent1, Chromosome parent2, int idx) {
 		int temp = 0;
 		temp = parent1.individual[idx];
 		parent1.individual[idx] = parent2.individual[idx];
@@ -216,12 +215,11 @@ public class EvaluateEquality {
 	
 	public void cross(int crossingPoint, Chromosome parent1, Chromosome parent2) {
 		for(int i = 0; i < crossingPoint; i++) {
-			swap(parent1, parent2, i);
+			swapGenes(parent1, parent2, i);
 		}
 	}
 
 	public void performCrossing(Population population) {
-		System.out.println("Entering performCrossing");
 		int crossingPoint = 0;
 		Random random = new Random();
 		
@@ -229,7 +227,6 @@ public class EvaluateEquality {
 			// Cross first with last, second with second last and so on
 			// Randomly generate crossing point for each such crossing/mating
 			crossingPoint = random.nextInt(population.population[i].chromosomeLength) + 1;
-			
 			if (population.population[i].numgenes == 2) {
 				crossingPoint = 1;
 			}	
@@ -252,13 +249,11 @@ public class EvaluateEquality {
 			else {
 				for(int j = 0; j < 4; j++) {
 					sb.append(str[count].charAt(j));
-					System.out.println("result = " + result);
 					if(Character.isLetter(str[count].charAt(j + 1))) {
 						break;
 					}
 				}
 				result = sb.toString();
-				System.out.println("result = " + result);
 				coEfficients[i]  = Integer.parseInt(result);
 			    sb.setLength(0);
 			}
@@ -270,7 +265,6 @@ public class EvaluateEquality {
 	}
 	
 	public void performMutation(Population population, int numgenes, int range) {
-		System.out.println("Entered performMutation");
 		Chromosome chromosome;
 		Random random = new Random();
 		int randChromosome;
@@ -309,26 +303,25 @@ public class EvaluateEquality {
 
 	public static void main(String[] args) {
 		// Generate solutions to satisfy a given linear equality equation
-		//TODO: configuration file for these params
-		int populationcount;
-		int numgenes;
-		int survivorcount;
-		String phenotype;
-		
-
-		Random random = new Random();
+		int populationcount = 0;
+		int numgenes = 0;
+		int survivorcount = 0;
+		String phenotype = null;
+		int range = 0;
 		int mutationCount = 0;
 		boolean bestSolutionFound = false;
 		int countNumGeneration = 1;
 		int countPopulationGeneration = 0;
-		int numPopulationGenerations = 10;
+		int numPopulationGenerations = 0;
+		Chromosome[] chromosomes;
+		String[] str;
+		Random random = new Random();
 		int[] coEfficients = new int[4];
 		
-		// Lets us read 6 inputs from Configuration file
+		// Lets us read 5 inputs from Configuration file
 		int numInputs = 5;
 		String inputs[] = new String[numInputs];
 		int inputcount = 0;
-		
 		URL path = EvaluateEquality.class.getResource("Configuration.txt");
 		File f = new File(path.getFile());
 
@@ -351,10 +344,9 @@ public class EvaluateEquality {
 		phenotype = inputs[3];
 		numPopulationGenerations = Integer.parseInt(inputs[4]);
 		
-		Chromosome[] chromosomes = new Chromosome[populationcount];
-		String[] str = phenotype.split(" ");
-		
-		int range = Integer.parseInt(str[str.length - 1]);
+		chromosomes = new Chromosome[populationcount];
+		str = phenotype.split(" ");
+		range = Integer.parseInt(str[str.length - 1]);
 		
 		coEfficients = getCoEfficients(str);
 		EvaluateEquality poly = new EvaluateEquality(populationcount, survivorcount);
@@ -367,13 +359,12 @@ public class EvaluateEquality {
 				chromosomes[i] = new Chromosome(numgenes);
 				for(int j = 0; j < numgenes; j++) {
 					chromosomes[i].individual[j] = random.nextInt((range/coEfficients[j]) - 1);
-					//System.out.println("chromosomes[i].individual[j] = " + chromosomes[i].individual[j]);
 				}
 			}
 			Population population = new Population(chromosomes, populationcount, survivorcount);
 
 			// Continue to perform fitness calculation, crossing and mutation until there are only 2 children left. If no
-			// solution is found at this point, let's regenerate the population again and repeat the below functions.
+			// solution is found at this point, let's regenerate the population again and repeat the below process.
 			while(population.survivorcount >= 2) {
 				poly.calcFitness(phenotype, population);
 				poly.performSelection(population);
@@ -391,6 +382,9 @@ public class EvaluateEquality {
 				if(mutationCount % 4 == 0) {
 					poly.performMutation(population, numgenes, range);
 				}
+				
+				// At this point after mutation, check if we have arrived at the solution that 
+				// satisfies the equality expression.
 				if(poly.checkIfSolutionArrived(population, range, numgenes, coEfficients)){
 					bestSolutionFound = true;
 					break;
@@ -406,9 +400,7 @@ public class EvaluateEquality {
 			}
 		}
 		if(bestSolutionFound == false) {
-			System.out.println("Seems like the combination of co-efficients and result expected dont correspond! We support only positive integer solutions");
-			System.out.println("For Eg : Sometimes if the result is a prime and the coefficients are all even we may not find the best solution");
-			System.out.println("Couldnt find exact solution, closest/best solutions we could find was");
+			System.out.println("Couldnt find exact solution, try again by increasing the countPopulationGeneration in config file ");
 			for(int i = 0; i < EvaluateEquality.survivorcount; i++) {
 				System.out.println("[" + chromosomes[i].individual[0] + ", " + chromosomes[i].individual[0 + 1] + "]");
 			}
