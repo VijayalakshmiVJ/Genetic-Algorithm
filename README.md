@@ -123,7 +123,7 @@ In our GA framework, we try to model mutation somewhat similar to nature. So, we
 For example, say Chromosome 2 and Chromosome 5 were selected for mutation. Say gene at index 1 was selected for chromosome 2 and gene at index 0 was selected for Chromosome 5 to mutate. Thus, we may get the following
 
 ```
-		Chromosome[2]   =  [x;y]  =  [02;<b>09</b>]   ---say mutated to --- > [02;**04**]   
+		Chromosome[2]   =  [x;y]  =  [02;**09**]   ---say mutated to --- > [02;**04**]   
 		Chromosome[5]   =  [x;y]  =  [**01**;04]   ---say mutated to --- > [**05**;04]  
 ```
 
