@@ -3,7 +3,7 @@ A genetic algorithm (GA) is an adaptive heuristic search algorithm that is inspi
 
 A real-world problem that we have selected to solve through Genetic Algorithm framework is Equality Expression. Below we will strive to find the best solution to a given Linear Equality Expression.
 
-The genetic algorithm process involves the following steps to solve the equality expression
+Our genetic algorithm process involves the following steps to solve the equality expression
 
 **Step 1. PHENOTYPE** <br />
 Get the phenotype from user defined configuration file. Phenotype must be an equality expression of the following format <br /> 
