@@ -86,7 +86,7 @@ If the population to retain is 75% and elimination 25%, which is generally what 
 
 
 **Step 5. CROSSOVER** <br />
-The fittest chromosomes from the above step are now to be crossed. For crossover we randomly select the crossing points based on the number of the genes. For example if the number of genes are 2 in each chromosome as depicted in above examples, then we choose the middle, i.e 1 as crossing point. If the number of genes are 3 or more, we randomly generate the crossing point to range between 0 - (chromosomeLength or numOfGenes – 1). The crossover will thus happen starting at 0 0 till crossing point (but not including it).
+The fittest chromosomes from the above step are now to be crossed. For crossover we randomly select the crossing points based on the number of the genes. For example if the number of genes are 2 in each chromosome as depicted in above examples, then we can directly choose the middle, i.e 1 as crossing point. If the number of genes are 3 or more, we randomly generate the crossing point to range between 0 - ((chromosomeLength or numOfGenes) – 1). The crossover will thus happen starting at 0 till crossing point (but not including it).
 For example, here since number of genes is 2, crossing point = 1. So interchange all genes starting from 0 till 1 (not including 1)
 
 ```
@@ -129,7 +129,7 @@ For example, say Chromosome 2 and Chromosome 5 were selected for mutation. Say g
 
 **Step 8. SOLUTION (BEST CHROMOSOMES)** <br />
 
-Selecting the best chromosome involves checking if we have arrived at solutions x and y that satisfy the phenotype i.e. the equality expression. If we have not arrived at the desired solution through the Steps 1 – 8, then as depicted in the flowchart, another round of population is taken and the entire GA process (Steps 1 - 8) is repeated.
+Selecting the best chromosome involves checking if we have arrived at solutions x and y that satisfy the phenotype i.e. the equality expression. The Steps 1 – 8 are repeated till we have reached a minumum of 2 chromosomes/individual. If we have not arrived at the desired solution after these generations, then as depicted in the flowchart, another round of population is generated and the entire GA process (Steps 1 - 8) is repeated and so on. The number of chromosomes that survive in each generation, the number of populations to be generated are governed by configuration file (where desired inputs can be given).
 
 ![Alt text](./GA_Flowchart.png?raw=true "Genetic Algorithm Flowchart")
 
