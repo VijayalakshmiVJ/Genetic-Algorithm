@@ -1,4 +1,9 @@
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
@@ -137,7 +142,12 @@ public class EvaluateEquality {
 		System.out.println("cumulativeProbability " + cumulativeProbability);
 		
 		for(int i = 0; i < population.populationcount; i++) {
-			population.population[i].probabilty = fitnessProb[i]/cumulativeProbability;
+			if(cumulativeProbability != 0) {
+				population.population[i].probabilty = fitnessProb[i]/cumulativeProbability;
+			}
+			else {
+				population.population[i].probabilty = 0;
+			}
 			population.population[i].probabilty = Double.parseDouble(df.format(population.population[i].probabilty));
 		}
 	}
@@ -300,16 +310,12 @@ public class EvaluateEquality {
 	public static void main(String[] args) {
 		// Generate solutions to satisfy a given linear equality equation
 		//TODO: configuration file for these params
-		int populationcount = 50;
-		int numgenes = 2;
-		int survivorcount = (int) (0.75 * populationcount);
-		String phenotype = "2x + 10y - 140";
+		int populationcount;
+		int numgenes;
+		int survivorcount;
+		String phenotype;
 		
-		//final String INFILE =  "configuration.txt";
-		
-		Chromosome[] chromosomes = new Chromosome[populationcount];
-		String[] str = phenotype.split(" ");
-		int range = Integer.parseInt(str[str.length - 1]);
+
 		Random random = new Random();
 		int mutationCount = 0;
 		boolean bestSolutionFound = false;
@@ -317,7 +323,39 @@ public class EvaluateEquality {
 		int countPopulationGeneration = 0;
 		int numPopulationGenerations = 10;
 		int[] coEfficients = new int[4];
+		
+		// Lets us read 6 inputs from Configuration file
+		int numInputs = 5;
+		String inputs[] = new String[numInputs];
+		int inputcount = 0;
+		
+		URL path = EvaluateEquality.class.getResource("Configuration.txt");
+		File f = new File(path.getFile());
 
+		try (BufferedReader bufin = new BufferedReader(new FileReader(f))){
+			String Currline;
+			String[] tempstring;
+			
+			while((Currline = bufin.readLine()) != null) {
+				tempstring = Currline.split("=");
+				inputs[inputcount++] = tempstring[1];
+			}
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		populationcount = Integer.parseInt(inputs[0]);
+		numgenes = Integer.parseInt(inputs[1]);
+		survivorcount = (int)(Double.parseDouble(inputs[2]) * populationcount);
+		phenotype = inputs[3];
+		numPopulationGenerations = Integer.parseInt(inputs[4]);
+		
+		Chromosome[] chromosomes = new Chromosome[populationcount];
+		String[] str = phenotype.split(" ");
+		
+		int range = Integer.parseInt(str[str.length - 1]);
+		
 		coEfficients = getCoEfficients(str);
 		EvaluateEquality poly = new EvaluateEquality(populationcount, survivorcount);
 
