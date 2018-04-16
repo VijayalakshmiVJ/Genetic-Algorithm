@@ -33,17 +33,6 @@ public class Test_Cases {
 		chromosomes[2].individual[0] = 5;
 		chromosomes[2].individual[1] = 5;
 		
-//		String[] str = phenotype.split(" ");
-//		int range = Integer.parseInt(str[str.length - 1]);
-//		Random random = new Random();
-//		int mutationCount = 0;
-//		boolean bestSolutionFound = false;
-//		int countNumGeneration = 1;
-//		int countPopulationGeneration = 0;
-//		int numPopulationGenerations = 10;
-//		int[] coEfficients = new int[4];
-//		coEfficients = poly.getCoEfficients(str);
-		
 		poly = new EvaluateEquality(populationcount, survivorcount);			
 		population = new Population(chromosomes, populationcount, survivorcount);
 	}
