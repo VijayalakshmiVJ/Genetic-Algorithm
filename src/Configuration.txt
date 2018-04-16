@@ -1,0 +1,5 @@
+populationcount =100
+numgenes =2
+survivorcount =0.75
+phenotype =4x + 5y - 240
+numPopulationGenerations =10
